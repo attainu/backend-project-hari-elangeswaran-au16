@@ -1,0 +1,19 @@
+{
+  "name": "mybooks-backend-project-hari-nihar",
+  "version": "1.0.0",
+  "description": "myBooks is an e-commerce website to purchase and review listings of books and publications",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/attainu/backend-project-hari-elangeswaran-au16.git"
+  },
+  "author": "Hari Vengadesh Elangeswaran, Nihar Ranjan Mohanty",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/attainu/backend-project-hari-elangeswaran-au16/issues"
+  },
+  "homepage": "https://github.com/attainu/backend-project-hari-elangeswaran-au16#readme"
+}
