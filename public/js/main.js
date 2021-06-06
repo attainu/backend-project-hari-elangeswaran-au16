@@ -1,6 +1,5 @@
-itemsArr = document.cookie.split('=')
-itemsCookie = itemsArr[1]
+let cartitemsValue = sessionStorage.getItem("items")
 
-if (itemsCookie != 0 && itemsCookie != undefined) {
-    document.getElementById('badge').innerHTML = itemsCookie
+if (cartitemsValue != 0) {
+    document.getElementById('badge').innerHTML = cartitemsValue
 }

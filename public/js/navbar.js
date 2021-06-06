@@ -30,17 +30,9 @@ jQuery(function ($) {
 });
 
 let items = document.getElementById('items').innerHTML
-document.cookie = `items=${items}`
-itemsArr = document.cookie.split('=')
-
-if (itemsArr[1]) {
-    itemsCookie = itemsArr[1]
-}
-
-console.log(itemsCookie)
-
-if (itemsCookie != 0 && itemsCookie != undefined) {
-    document.getElementById('badge').innerHTML = itemsCookie
+sessionStorage.setItem("items", items)
+if (sessionStorage.getItem("items") != 0) {
+    document.getElementById('badge').innerHTML = sessionStorage.getItem("items")
 }
 
 

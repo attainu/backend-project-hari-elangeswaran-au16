@@ -67,7 +67,6 @@ exports.addToCart = async (req, res) => {
 }
 
 exports.addItemCounter = async (req, res) => {
-    let addBookId = req.body.bookid
     try {
         const fetchUser = await UserModel.findById(req.session.userid).lean()
         await UserModel.updateOne({_id: req.session.userid},{$unset: {cart:1, quantity:1}},{multi:true})
@@ -78,7 +77,7 @@ exports.addItemCounter = async (req, res) => {
         let newQuantity = []
 
         for (index in cart) {
-            if (addBookId == cart[index]) {
+            if (req.body.bookid == cart[index]) {
                 quantity[index] += 1
             }
             newCart.push(cart[index])
@@ -109,7 +108,6 @@ exports.addItemCounter = async (req, res) => {
 }
 
 exports.reduceItemCount = async (req, res) => {
-    let removeBookId = req.body.bookid
     try {
         const fetchUser = await UserModel.findById(req.session.userid).lean()
         await UserModel.updateOne({_id: req.session.userid},{$unset: {cart:1, quantity:1}},{multi:true})
@@ -120,7 +118,7 @@ exports.reduceItemCount = async (req, res) => {
         let newQuantity = []
 
         for (index in cart) {
-            if (removeBookId == cart[index]) {
+            if (req.body.bookid == cart[index]) {
                 quantity[index] -= 1
             }
 
