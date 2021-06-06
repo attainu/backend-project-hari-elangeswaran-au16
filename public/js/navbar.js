@@ -39,7 +39,7 @@ if (itemsArr[1]) {
 
 console.log(itemsCookie)
 
-if (itemsCookie != 0) {
+if (itemsCookie != 0 && itemsCookie != undefined) {
     document.getElementById('badge').innerHTML = itemsCookie
 }
 
