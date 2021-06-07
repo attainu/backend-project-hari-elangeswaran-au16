@@ -40,8 +40,10 @@
    ```sh
    npm install
    ```
-3. npm start 
-
+3. run server.js 
+   ```sh
+   npm start
+   ```
 
 
 
