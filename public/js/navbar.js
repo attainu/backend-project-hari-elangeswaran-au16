@@ -34,5 +34,8 @@ sessionStorage.setItem("items", items)
 if (sessionStorage.getItem("items") != 0) {
     document.getElementById('badge').innerHTML = sessionStorage.getItem("items")
 }
+else {
+    document.getElementById('badge').innerHTML = ""
+}
 
 
