@@ -2,6 +2,7 @@ const router = require('express').Router()
 const middleware = require('../middleware/authenticate')
 const booksController = require('../controllers/books')
 
+// routes for all everything book related
 router.get('/', booksController.getHome)
 router.get('/about', booksController.getAbout)
 router.get('/search', booksController.getSearchResults)
