@@ -27,7 +27,9 @@ exports.checkoutFromBuyNow = async (req, res) => {
             name: fetchUser.name, 
             email: fetchUser.email,
             amount: fetchBook.price,
-            contact: fetchUser.contact
+            contact: fetchUser.contact,
+            address: fetchUser.address,
+            pincode: fetchUser.pincode
     }
     return res.status(200).render('checkout', data)
     } catch (error) {
