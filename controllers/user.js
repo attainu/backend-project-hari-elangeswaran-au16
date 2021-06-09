@@ -1,12 +1,10 @@
 // import packages and models
-
 const bcrypt = require('bcrypt')
 const cloudinary = require('cloudinary').v2
 const {Base64} = require('js-base64')
 const UserModel = require('../models/User')
 
-// import api secret from process.env and configure cloudinary 
-
+// import keys and configure cloudinary 
 const {API_SECRET} = process.env  
 cloudinary.config({ 
     cloud_name: 'ehvenga', 
@@ -14,10 +12,12 @@ cloudinary.config({
     api_secret: API_SECRET 
 })
 
+// sign in page
 exports.getSignIn = (req, res) => {
     res.render('signin')
 }
 
+// post signup 
 exports.userSignUp = async (req, res) => {
     // assiging values to variables from body
     const {name, email, password} = req.body
@@ -56,6 +56,7 @@ exports.userSignUp = async (req, res) => {
     }
 } 
 
+// post sign in 
 exports.userSignIn = async (req, res) => {
     
     const {email, password} = req.body
@@ -85,14 +86,16 @@ exports.userSignIn = async (req, res) => {
     }
 }
 
+// for logging out
 exports.userLogout = (req, res) => {
     // clear session cookie on logout
     res.status(202).clearCookie('connect.sid').redirect('/')
     console.log('Logout Success')
 }
 
+// ownprofile with edit, delete and add books button
 exports.getOwnProfile = async (req, res) => {
-    // to fetch user if self using '/profile/ route
+    // to fetch user if self using '/profile' route
     try {
         const fetchUser = await UserModel.findById(req.session.userid)
         // adding ownprofile value to render elements visible to own profile
@@ -104,6 +107,7 @@ exports.getOwnProfile = async (req, res) => {
     }
 }
 
+// other user's page, no own user elements
 exports.getOtherUser = async (req, res) => {
     // to fetch users who are not self using '/user/:userid' route
     try {
@@ -118,6 +122,7 @@ exports.getOtherUser = async (req, res) => {
     }
 }
 
+// edit user form and prefill with existing data
 exports.getEditUserDetails = async (req, res) => {
     // fetch existing user details and show in form
     try {
@@ -130,6 +135,7 @@ exports.getEditUserDetails = async (req, res) => {
     
 }
 
+// edited user details
 exports.updateUserDetails = async (req, res) => {
     const {name,email,contact,address,pincode} = req.body
 

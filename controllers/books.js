@@ -1,12 +1,10 @@
 // import packages and models
-
 const cloudinary = require('cloudinary').v2
 const {Base64} = require('js-base64')
 const ReviewModel = require('../models/Review')
 const BookModel = require('../models/Book')
 
-// import api secret from process.env and configure cloudinary
-
+// import keys and configure cloudinary
 const {API_SECRET} = process.env  
 cloudinary.config({ 
     cloud_name: 'ehvenga', 
@@ -14,8 +12,10 @@ cloudinary.config({
     api_secret: API_SECRET 
 })
 
+// home page
 exports.getHome = async (req, res) => {
     try {
+        // retrive all books and books' data for home page
         const data = {books:[]}
         const fetchBooks = await BookModel.find({}).lean()
         for (const book in fetchBooks) {
@@ -28,12 +28,15 @@ exports.getHome = async (req, res) => {
     }
 }
 
+// about page
 exports.getAbout = (req, res) => {
     res.render('about')
 }
 
+// search results page
 exports.getSearchResults = async (req, res) => {
     try {
+        // retrive results of book collection using four search fields
         const data = {books:[]}
         const fetchBooks = await BookModel.find(
             {$or:[
@@ -43,11 +46,13 @@ exports.getSearchResults = async (req, res) => {
                 {"genre" : { '$regex' : req.query.search, '$options' : 'i'}}
             ]}
         ).lean()
-
-        for (const book in fetchBooks) {
-            data.books.push(fetchBooks[book])
+        
+        // loop to add books into book data
+        for (let index in fetchBooks) {
+            data.books.push(fetchBooks[index])
         }
-
+        
+        // if no results result page
         if (!data.books[0]) {
             return res.render('search', {empty: 'No Search Results: Try Again'})
         }
@@ -59,16 +64,20 @@ exports.getSearchResults = async (req, res) => {
     }
 }
 
+// book listing
 exports.getBookListing = async (req, res) => {
     try {
+        // fetch book data from book collection
         const fetchBook = await BookModel.findById(req.params.bookid).populate('reviews').lean()
 
+        // if no reviews in reviews array
         if (!fetchBook.reviews[0]) {
             return res.status(200).render('listing', {
                 fetchBook,
                 empty: "No Reviews: Be the first one to leave a Review"
             })
         }
+
         let data = {books: fetchBook.reviews}
         return res.status(200).render('listing', {
             data: data,
@@ -81,17 +90,20 @@ exports.getBookListing = async (req, res) => {
     }
 }
 
+// review form page
 exports.getReviewPage = (req, res) => {
     res.status(200).render('review', {
         bookid: req.params.bookid
     })
 }
 
+// post review
 exports.postReview = async (req, res) => {
     let savedReviewDoc = {}
     const {bookid} = req.body
     console.log(bookid)
 
+    // data to be passed when creating new document
     let reviewData = {
         reviewTitle: req.body.reviewTitle,
         review: req.body.review,
@@ -101,9 +113,9 @@ exports.postReview = async (req, res) => {
             name: req.session.name
         }
     }
-    console.log(reviewData)
 
     try {
+        // create new review document
         const newReviewDoc = new ReviewModel(reviewData)
         savedReviewDoc = await newReviewDoc.save()
     } catch (error) {
@@ -112,6 +124,7 @@ exports.postReview = async (req, res) => {
     }
 
     try {
+        // update book document with new review
         await BookModel.findByIdAndUpdate(
             bookid,
             {
@@ -126,18 +139,23 @@ exports.postReview = async (req, res) => {
     res.status(201).redirect(`/listing/${bookid}`)
 }
 
+// book upload form page
 exports.getBookUpload = (req, res) => {
     res.status(200).render('upload')
 }
 
+// post book
 exports.uploadBook = async (req, res) => {
 
+    // to use body data to create new book document
     try {
+        // encode to base64 and upload to cloudinary
         const base64String = Base64.encode(req.files.cover.data)
         const uploadResult = await cloudinary.uploader.upload(`data:${req.files.cover.mimetype};base64,${base64String}`,{
             folder: "mybooks/"
         })
         
+        // book data to be used when creating new book document
         let bookData = {
             title: req.body.title,
             author: req.body.author,
@@ -152,6 +170,7 @@ exports.uploadBook = async (req, res) => {
             reviewed: []
         }
 
+        // create and save new book document
         const newBookDoc = new BookModel(bookData)
         const savedBookDoc = await newBookDoc.save()
         return res.status(201).redirect(`listing/${savedBookDoc._id}`)

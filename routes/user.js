@@ -2,6 +2,7 @@ const router = require('express').Router()
 const middleware = require('../middleware/authenticate')
 const userController = require('../controllers/user')
 
+// routes for all everything user related
 router.get('/signin', userController.getSignIn)
 router.post('/signin', userController.userSignIn)
 router.post('/signup', userController.userSignUp)

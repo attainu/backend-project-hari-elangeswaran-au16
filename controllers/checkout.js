@@ -1,10 +1,11 @@
 // import packages
-
 const UserModel = require('../models/User')
 const BookModel = require('../models/Book')
 
+// get checkout page from cart
 exports.checkoutFromCart = async (req, res) => {
     try {
+        // fetch user data
         const fetchUser = await UserModel.findById(req.session.userid)
         let data = {
             name: fetchUser.name, 
@@ -19,8 +20,10 @@ exports.checkoutFromCart = async (req, res) => {
     }
 }
 
+// checkout page from buy now button
 exports.checkoutFromBuyNow = async (req, res) => {
     try {
+        // fetch user and book data
         const fetchBook = await BookModel.findById(req.body.bookid)
         const fetchUser = await UserModel.findById(req.session.userid)
         let data = {
@@ -38,6 +41,7 @@ exports.checkoutFromBuyNow = async (req, res) => {
     }
 }
 
+// payment page
 exports.payment = async (req, res) => {
     try {
         data = req.body
