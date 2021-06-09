@@ -2,6 +2,7 @@ const router = require('express').Router()
 const middleware = require('../middleware/authenticate')
 const cartController = require('../controllers/cart')
 
+// routes for all everything cart related
 router.get('/', middleware.isLoggedIn, cartController.getCart)
 router.get('/clear', middleware.isLoggedIn, cartController.clearCart)
 router.post('/', middleware.isLoggedIn, cartController.addToCart)

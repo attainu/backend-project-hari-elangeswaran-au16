@@ -1,5 +1,6 @@
 middlewareObj = {};
 
+// check if looged in using session object
 middlewareObj.isLoggedIn = function (req, res, next) {
     if (req.session.isLoggedIn == true) {
         next()
